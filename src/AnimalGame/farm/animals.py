@@ -2,6 +2,13 @@ from AnimalGame.gamestructure import Animal, FeedAble, GameEvent
 
 
 class Cow(Animal, FeedAble):
+    food_preferences = [
+        "grass",
+        "hay",
+        "oats",
+        "pellets",
+    ]
+
     def __init__(self):
         super().__init__(name="Cow")
 
@@ -9,7 +16,7 @@ class Cow(Animal, FeedAble):
         if not self.is_alive:
             return GameEvent(self.name, "feed", "The cow is dead and cannot eat.")
 
-        if food.lower() != "grass":
+        if food.lower() not in self.food_preferences:
             return GameEvent(self.name, "feed", "The cow refuses the food.")
 
         return GameEvent(self.name, "feed", "The cow eats happily and says Moo!")
@@ -19,6 +26,14 @@ class Cow(Animal, FeedAble):
 
 
 class Chicken(Animal, FeedAble):
+    food_preferences = [
+        "grains",
+        "seeds",
+        "insects",
+        "worms",
+        "corn",
+    ]
+
     def __init__(self):
         super().__init__(name="Chicken")
 
@@ -26,7 +41,7 @@ class Chicken(Animal, FeedAble):
         if not self.is_alive:
             return GameEvent(self.name, "feed", "The chicken is dead and cannot eat.")
 
-        if food.lower() != "grains":
+        if food.lower() not in self.food_preferences:
             return GameEvent(self.name, "feed", "The chicken pecks suspiciously.")
 
         return GameEvent(self.name, "feed", "The chicken eats and says Cluck!")

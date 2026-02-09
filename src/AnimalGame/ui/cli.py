@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List
 
 from AnimalGame.gameinit import create_animals, load_config
-from AnimalGame.gamestructure import Animal, FeedAble, GameEvent, Player
+from AnimalGame.gamestructure import FOODOPTIONS, Animal, FeedAble, GameEvent, Player
 from AnimalGame.wild.animals import Wolf
 
 
@@ -50,16 +50,31 @@ def do_main_loop(animals: List[Animal]) -> None:
             print("Please enter a valid number")
             continue
 
-        food = input(f"What do you feed {animal.name}? ").strip()
+        print("\nFood options:")
+        for i, food in enumerate(FOODOPTIONS, 1):
+            print(f"{i}. {food}")
+
+        while True:
+            try:
+                food_choice = input("Select food by number: ").strip()
+                food_idx = int(food_choice) - 1
+                if food_idx < 0 or food_idx >= len(FOODOPTIONS):
+                    print("Invalid selection")
+                    continue
+                food = FOODOPTIONS[food_idx]
+                break
+            except ValueError:
+                print("Please enter a valid number")
+
         event = player.feed(animal, food)
-        print(f"[{event.actor}] {event.action}: {event.result}")
+        display_event(event)
 
         for wolf in wolves:
             alive_prey = [a for a in animals if a.is_alive and not isinstance(a, Wolf)]
             if alive_prey and random.random() < 0.5:
                 prey = random.choice(alive_prey)
                 event = wolf.eat(prey)
-                print(f"[{event.actor}] {event.action}: {event.result}")
+                display_event(event)
 
 
 def run_cli() -> None:

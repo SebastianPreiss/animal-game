@@ -4,6 +4,25 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
+FOODOPTIONS = [
+    "grass",
+    "grains",
+    "seeds",
+    "fruit",
+    "apple",
+    "meat",
+    "fish",
+    "bread",
+    "carrot",
+    "lettuce",
+    "corn",
+    "oats",
+    "hay",
+    "pellets",
+    "insects",
+    "worms",
+]
+
 
 class GameEntity(ABC):
     pass

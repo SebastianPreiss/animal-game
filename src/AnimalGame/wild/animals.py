@@ -2,6 +2,15 @@ from AnimalGame.gamestructure import Animal, GameEvent
 
 
 class Parrot(Animal):
+    food_preferences = [
+        "seeds",
+        "fruit",
+        "apple",
+        "bread",
+        "carrot",
+        "lettuce",
+    ]
+
     def __init__(self):
         super().__init__(name="Parrot")
 
@@ -9,7 +18,10 @@ class Parrot(Animal):
         if not self.is_alive:
             return GameEvent(self.name, "feed", "The parrot is dead.")
 
-        return GameEvent(self.name, "feed", "The parrot eats and squawks!")
+        if food.lower() not in self.food_preferences:
+            return GameEvent(self.name, "feed", "The parrot refuses the food.")
+
+        return GameEvent(self.name, "feed", "The parrot eats happily and squawks!")
 
     def make_sound(self) -> str:
         return "Squawk!"
