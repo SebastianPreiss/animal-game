@@ -6,7 +6,9 @@
 
 ---
 
-A small animal management game in Python that supports both CLI and GUI (GUI is for demonstration purposes). Feed animals, listen to their sounds, and watch out for wolves!
+A small animal management game in Python that supports both CLI and GUI.
+The GUI is for demonstration purposes and shows the abstraction from game logic to visualization.
+Feed animals, listen to their sounds, and watch out for wolves!
 
 ---
 
