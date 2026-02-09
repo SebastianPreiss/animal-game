@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "animal-game"
-version = "0.1.0"
+version = "0.2.0"
 description = "A small animal management game"
 authors = ["Sebastian Preiss <seb.preiss@gmx.at>"]
 readme = "README.md"
