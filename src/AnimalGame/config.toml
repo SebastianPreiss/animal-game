@@ -1,0 +1,7 @@
+[farm]
+cows = 2
+chickens = 3
+
+[wild]
+parrots = 1
+wolves = 1
