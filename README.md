@@ -137,14 +137,14 @@ Features:
 Pull and run the container directly from GitHub Container Registry:
 
 ```bash
-docker pull ghcr.io/sebastianpreiss/animal-game/animalgame:latest
+docker pull ghcr.io/sebastianpreiss/animalgame:latest
 
 ```
 
 Run the CLI interactively inside the container:
 
 ```bash
-docker run -it --rm ghcr.io/sebastianpreiss/animal-game/animalgame:latest
+docker run -it --rm ghcr.io/sebastianpreiss/animalgame:latest
 
 ```
 
