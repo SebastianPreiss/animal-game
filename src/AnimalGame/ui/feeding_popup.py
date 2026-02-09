@@ -26,9 +26,6 @@ class FeedingPopup:
         height_px = int(min(rows, 2) * (button_height * 100 + padding * (rows / 2)))
 
         self.popup.geometry(f"{width_px}x{height_px}")
-        print(
-            f"Popup Größe: {width_px}x{height_px} für {len(options)} Optionen in {rows} Reihen"
-        )
 
         if rows > 2:
             container = tk.Frame(self.popup)

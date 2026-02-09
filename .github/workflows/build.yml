@@ -1,0 +1,49 @@
+name: Build & Package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build_wheel:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies (for build)
+        run: poetry install --no-root
+
+      - name: Build wheel
+        run: poetry build -f wheel
+
+      - name: Upload wheel artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: animalgame-wheel
+          path: dist/*.whl
+
+  docker_build:
+    needs: build_wheel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Build Docker image
+        run: docker build -t animalgame:latest .
