@@ -7,8 +7,34 @@ on:
   pull_request:
     branches: [main]
 
-jobs:
+  jobs:
+    test:
+      name: Run Pytest
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: "3.13"
+
+        - name: Install Poetry
+          run: pip install poetry
+
+        - name: Install dependencies
+          run: poetry install
+
+        - name: Run Pytest
+          run: |
+            poetry run pytest -v > pytest_report.txt || (cat pytest_report.txt && exit 1)
+            echo "### Pytest Results" >> $GITHUB_STEP_SUMMARY
+            echo '```text' >> $GITHUB_STEP_SUMMARY
+            tail -n 20 pytest_report.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+
   build_wheel:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
