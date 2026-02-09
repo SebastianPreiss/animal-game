@@ -57,5 +57,8 @@ jobs:
 
       - name: Tag and Push Docker image
         run: |
-          docker tag animalgame:latest ghcr.io/${{ github.repository_owner.toLower() }}/animal-game/animalgame:latest
-          docker push ghcr.io/${{ github.repository_owner.toLower() }}/animal-game/animalgame:latest
+          # Convert to lowercase using shell expansion
+          OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+
+          docker tag animalgame:latest ghcr.io/${OWNER_LC}/animal-game/animalgame:latest
+          docker push ghcr.io/${OWNER_LC}/animal-game/animalgame:latest
