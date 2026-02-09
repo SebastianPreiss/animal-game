@@ -162,7 +162,7 @@ poetry run pytest -v
 
 Included tests:
 
-- `test_feed_cow.py`: Feed a cow correctly and test wrong food
+- `test_cow.py`: Feed a cow correctly and test wrong food
 - `test_wolf.py`: Wolf eats a cow correctly
 
 ---
