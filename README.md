@@ -43,7 +43,7 @@ AnimalGame/
 1. Clone the repository:
 
 ```bash
-git clone <repo-url>
+git clone git@github.com:SebastianPreiss/animal-game.git
 cd animal-game
 ```
 
@@ -58,13 +58,6 @@ pip install poetry
 ```bash
 poetry install
 ```
-
-4. Activate the Poetry shell (optional, for easier access):
-
-```bash
-poetry shell
-```
-
 ---
 
 ## Configuration (`config.toml`)
