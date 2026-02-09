@@ -36,7 +36,6 @@ AnimalGame/
 ---
 
 ## Installation (Local, Poetry)
-
 1. Clone the repository:
 
 ```bash
