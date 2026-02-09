@@ -27,9 +27,9 @@ jobs:
       - name: Set version from Tag
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          # Extrahiert v1.2.3 -> 1.2.3
+          # Extrahiert das 'v' (v0.2.0 -> 0.2.0)
           VERSION=${GITHUB_REF#refs/tags/v}
-          echo "Setting version to $VERSION"
+          echo "Setze Version auf $VERSION"
           poetry version $VERSION
 
       - name: Install dependencies
@@ -50,34 +50,25 @@ jobs:
     permissions:
       contents: read
       packages: write
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Poetry
-        run: pip install poetry
-
-      - name: Build Docker image
-        run: docker build -t animalgame:latest .
+        uses: actions/checkout@v4
 
       - name: Log in to GHCR
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Tag and Push Docker image
+      - name: Build and Push Docker image
         run: |
           OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           IMAGE_NAME="ghcr.io/${OWNER_LC}/animalgame"
 
-          # Immer latest pushen
           docker build -t $IMAGE_NAME:latest .
           docker push $IMAGE_NAME:latest
 
-          # Falls es ein Tag ist, auch diesen pushen (z.B. :1.2.3)
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$VERSION
@@ -98,7 +89,7 @@ jobs:
           path: dist/
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: dist/*.whl
         env:
