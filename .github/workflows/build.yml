@@ -7,31 +7,26 @@ on:
   pull_request:
     branches: [main]
 
-  jobs:
-    test:
-      name: Run Pytest
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
+jobs:
+  test:
+    name: Run Pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-        - name: Set up Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: "3.13"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
 
-        - name: Install Poetry
-          run: pip install poetry
+      - name: Install Poetry
+        run: pip install poetry
 
-        - name: Install dependencies
-          run: poetry install
+      - name: Install dependencies
+        run: poetry install
 
-        - name: Run Pytest
-          run: |
-            poetry run pytest -v > pytest_report.txt || (cat pytest_report.txt && exit 1)
-            echo "### Pytest Results" >> $GITHUB_STEP_SUMMARY
-            echo '```text' >> $GITHUB_STEP_SUMMARY
-            tail -n 20 pytest_report.txt >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
+      - name: Run Pytest
+        run: poetry run pytest -v
 
   build_wheel:
     needs: test
@@ -53,7 +48,6 @@ on:
       - name: Set version from Tag
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          # Extrahiert das 'v' (v0.2.0 -> 0.2.0)
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "Setze Version auf $VERSION"
           poetry version $VERSION
@@ -91,10 +85,8 @@ on:
         run: |
           OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           IMAGE_NAME="ghcr.io/${OWNER_LC}/animalgame"
-
           docker build -t $IMAGE_NAME:latest .
           docker push $IMAGE_NAME:latest
-
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$VERSION

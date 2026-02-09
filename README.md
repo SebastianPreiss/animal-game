@@ -1,6 +1,7 @@
 # AnimalGame
 
-[![Tests, Build & Package](https://github.com/SebastianPreiss/animal-game/actions/workflows/build.yml/badge.svg)](https://github.com/SebastianPreiss/animal-game/actions/workflows/build.yml)
+[![Pytest Status](https://img.shields.io/github/actions/workflow/status/SebastianPreiss/animal-game/build.yml?branch=main&label=Tests&logo=pytest)](https://github.com/SebastianPreiss/animal-game/actions/workflows/build.yml)
+[![Build & Package](https://github.com/SebastianPreiss/animal-game/actions/workflows/build.yml/badge.svg)](https://github.com/SebastianPreiss/animal-game/actions/workflows/build.yml)
 [![Latest Release](https://img.shields.io/github/v/release/SebastianPreiss/animal-game?label=Latest%20Version&color=blue)](https://github.com/SebastianPreiss/animal-game/releases/latest)
 [![Download Wheel](https://img.shields.io/badge/Wheel-download-orange)](https://github.com/SebastianPreiss/animal-game/releases/latest)
 [![Docker Image](https://img.shields.io/badge/Docker-GHCR-blue?logo=docker&logoColor=white)](https://github.com/SebastianPreiss/animal-game/pkgs/container/animalgame)
