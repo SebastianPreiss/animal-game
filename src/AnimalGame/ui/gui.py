@@ -1,14 +1,13 @@
-import random
 import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox
 from typing import List
 
+from AnimalGame.game_controller import GameController
 from AnimalGame.gameinit import create_animals, load_config
-from AnimalGame.gamestructure import FOODOPTIONS, Animal, FeedAble, Player
+from AnimalGame.gamestructure import FOODOPTIONS, Animal, FeedAble
 from AnimalGame.ui.animal_widget import AnimalWidget
-from AnimalGame.wild.animals import Wolf
-from src.AnimalGame.ui.feeding_popup import FeedingPopup
+from AnimalGame.ui.feeding_popup import FeedingPopup
 
 
 class AnimalGUI:
@@ -20,17 +19,22 @@ class AnimalGUI:
 
         # Game Setup
         config_path = Path(__file__).resolve().parent.parent / "config.toml"
-        self.animals: List[Animal] = create_animals(load_config(config_path))
-        self.player = Player()
-        self.wolves = [a for a in self.animals if isinstance(a, Wolf)]
+        animals: List[Animal] = create_animals(load_config(config_path))
+        self.controller = GameController(animals)
 
         # Status-Bar
         self.status = tk.StringVar()
         self.status.set("Welcome to AnimalGame GUI!")
         self.status_label = tk.Label(root, textvariable=self.status, anchor="w")
         self.status_label.pack(fill="x", side="bottom")
+        self.wolf_status = tk.StringVar()
+        self.wolf_status.set("")
+        self.wolf_status_label = tk.Label(
+            root, textvariable=self.wolf_status, anchor="w"
+        )
+        self.wolf_status_label.pack(fill="x", side="bottom")
 
-        # Tier-Frame
+        # Animal Frame
         self.frame = tk.Frame(root)
         self.frame.pack(expand=True, fill="both")
         self.animal_widgets: List[AnimalWidget] = []
@@ -42,7 +46,7 @@ class AnimalGUI:
             widget.destroy()
 
         self.animal_widgets.clear()
-        for idx, animal in enumerate(self.animals):
+        for idx, animal in enumerate(self.controller.get_animal_list()):
             widget = AnimalWidget(self.frame, animal, self.show_feed_menu)
             widget.label.grid(row=idx // 4, column=idx % 4, padx=10, pady=10)
             self.animal_widgets.append(widget)
@@ -65,23 +69,18 @@ class AnimalGUI:
         )
 
     def feed_animal(self, animal: FeedAble, food: str):
-        """Perform feeding action, update status, and let wolves act."""
-        event = self.player.feed(animal, food)
+        """Perform feeding action via GameController and update GUI."""
+        self.wolf_status.set("")
+        event = self.controller.feed_animal(animal, food)
         self.status.set(f"[{event.actor}] {event.action}: {event.result}")
-        self.update_animal_widgets()
-        self.wolves_act()
 
-    def wolves_act(self):
-        """Let the wolves randomly attack animals."""
-        for wolf in self.wolves:
-            alive_prey = [
-                a for a in self.animals if a.is_alive and not isinstance(a, Wolf)
-            ]
-            if alive_prey and random.random() < 0.5:
-                prey = random.choice(alive_prey)
-                event = wolf.eat(prey)
-                self.status.set(f"[{event.actor}] {event.action}: {event.result}")
         self.update_animal_widgets()
+
+        for wolf_event in self.controller.wolves_act():
+            self.wolf_status.set(
+                f"\n[{wolf_event.actor}] {wolf_event.action}: {wolf_event.result}"
+            )
+            self.update_animal_widgets()
 
     def update_animal_widgets(self):
         """Update the status of all animal widgets."""
