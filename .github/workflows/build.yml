@@ -47,3 +47,15 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t animalgame:latest .
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag and Push Docker image
+        run: |
+          docker tag animalgame:latest ghcr.io/${{ github.repository }}/animalgame:latest
+          docker push ghcr.io/${{ github.repository }}/animalgame:latest

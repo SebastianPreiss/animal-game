@@ -1,26 +1,22 @@
-[project]
+[tool.poetry]
 name = "animal-game"
 version = "0.1.0"
-description = ""
-authors = [
-    {name = "Sebastian Preiss",email = "seb.preiss@gmx.at"}
-]
+description = "A small animal management game"
+authors = ["Sebastian Preiss <seb.preiss@gmx.at>"]
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "pillow (>=12.1.0,<13.0.0)",
-    "tomli (>=2.4.0,<3.0.0)",
-    "typing-extensions (>=4.15.0,<5.0.0)",
-    "packaging (>=26.0,<27.0)"
-]
+packages = [{ include = "AnimalGame", from = "src" }]
 
+[tool.poetry.dependencies]
+python = ">=3.13"
+pillow = ">=12.1.0,<13.0.0"
+tomli = ">=2.4.0,<3.0.0"
+typing-extensions = ">=4.15.0,<5.0.0"
+packaging = ">=26.0,<27.0"
+
+[tool.poetry.dev-dependencies]
+pytest = ">=9.0.2,<10.0.0"
+pluggy = ">=1.6.0,<2.0.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[dependency-groups]
-dev = [
-    "pytest (>=9.0.2,<10.0.0)",
-    "pluggy (>=1.6.0,<2.0.0)"
-]
